@@ -14,6 +14,7 @@ class Jobs(SqlAlchemyBase):
     collaborators = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     start_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
     end_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
+    hazard = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('hazard.id'))
     is_finished = sqlalchemy.Column(sqlalchemy.Boolean)
 
     user = orm.relationship('User')

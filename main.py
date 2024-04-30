@@ -7,6 +7,7 @@ from data import db_session
 from data.jobs import Jobs
 from data.users import User
 from data.departments import Department
+from data.hazard import Hazard
 
 from forms.login import LoginForm
 from forms.add_job import AddJob
@@ -156,8 +157,11 @@ def logout():
 def add_job():
     form = AddJob()
     if form.validate_on_submit():
+        hazard = Hazard(title=form.hazard.data)
+        db_sess.add(hazard)
+        db_sess.commit()
         job = Jobs(team_leader=form.team_leader.data, job=form.job.data, work_size=form.work_size.data,
-                   collaborators=form.collaborators.data, is_finished=form.is_finished.data)
+                   collaborators=form.collaborators.data, is_finished=form.is_finished.data, hazard=hazard.id)
         db_sess.add(job)
         db_sess.commit()
         return redirect('/')
@@ -167,4 +171,4 @@ def add_job():
 if __name__ == '__main__':
     db_session.global_init("db/blogs.db")
     db_sess = db_session.create_session()
-    app.run(port=8080, host='127.0.0.1')
+    app.run(port=5000, host='127.0.0.1')
